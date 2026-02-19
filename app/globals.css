@@ -1,26 +1,119 @@
 @import "tailwindcss";
 
+/* ─── FX Intelligence — Enterprise Design System ───────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --bg-page: #fafaf8;
+  --bg-card: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-hover: #f5f3ee;
+  --bg-active: #f0ede6;
+  --bg-muted: #f5f3ee;
+  --bg-overlay: rgba(0, 0, 0, 0.4);
+
+  /* Borders */
+  --border: #e5e2db;
+  --border-subtle: #eceae4;
+
+  /* Text */
+  --text-primary: #1a1a1a;
+  --text-secondary: #5c5c5c;
+  --text-muted: #8c8c8c;
+  --text-inverse: #ffffff;
+
+  /* Brand */
+  --accent: #135b45;
+  --accent-hover: #0e4a38;
+  --accent-subtle: #135b4512;
+  --accent-light: #19a26c;
+
+  /* Semantic */
+  --positive: #19a26c;
+  --positive-bg: #19a26c10;
+  --negative: #d94636;
+  --negative-bg: #d9463610;
+  --warning: #d4880f;
+  --warning-bg: #d4880f10;
+  --info: #0071c1;
+  --info-bg: #0071c110;
+
+  /* Chart palette */
+  --chart-1: #135b45;
+  --chart-2: #0071c1;
+  --chart-3: #d94636;
+  --chart-4: #d4880f;
+  --chart-5: #7c3aed;
+  --chart-6: #c026d3;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--bg-page);
+  --color-foreground: var(--text-primary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ─── Base ──────────────────────────────────────────────────── */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ─── Selection ─────────────────────────────────────────────── */
+
+::selection {
+  background: #135b4530;
+  color: var(--text-primary);
+}
+
+/* ─── Focus ─────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── Animations ───────────────────────────────────────────── */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
