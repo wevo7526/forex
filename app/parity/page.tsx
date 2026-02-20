@@ -7,6 +7,8 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { SignalBadge } from "@/components/ui/SignalBadge";
 import { LoadingState, ErrorState } from "@/components/ui/Spinner";
 import { IRPCurveChart } from "@/components/charts/IRPCurveChart";
+import { PPPScatterPlot } from "@/components/charts/PPPScatterPlot";
+import type { PPPScatterPoint } from "@/components/charts/PPPScatterPlot";
 import { fetchIRPData, fetchPPPData } from "@/lib/api";
 import { useRates } from "@/store/ratesStore";
 import type { IRPData, PPPData } from "@/types/forex";
@@ -365,6 +367,38 @@ export default function ParityPage() {
                 <strong style={{ color: "var(--text-primary)" }}>{pppData.approxChangePct.toFixed(2)}%</strong>.
               </div>
             </div>
+
+            {/* PPP Scatter Plot — illustrative cross-currency comparison */}
+            {(() => {
+              // Generate scatter data showing how the current pair plus reference pairs
+              // relate to PPP theory (inflation diff vs actual FX change)
+              const scatterData: PPPScatterPoint[] = [
+                {
+                  pair,
+                  inflationDiff: inflationDomestic - inflationForeign,
+                  actualFxChange: pppData.deviationPct + (inflationDomestic - inflationForeign),
+                  pppPredicted: inflationDomestic - inflationForeign,
+                },
+                // Add illustrative reference pairs with typical inflation differentials
+                { pair: "USD/JPY", inflationDiff: 1.5, actualFxChange: 3.2, pppPredicted: 1.5 },
+                { pair: "GBP/USD", inflationDiff: -0.8, actualFxChange: -0.3, pppPredicted: -0.8 },
+                { pair: "USD/CHF", inflationDiff: 1.8, actualFxChange: 0.9, pppPredicted: 1.8 },
+                { pair: "AUD/USD", inflationDiff: -0.5, actualFxChange: -1.8, pppPredicted: -0.5 },
+                { pair: "USD/CAD", inflationDiff: 0.3, actualFxChange: 1.1, pppPredicted: 0.3 },
+                { pair: "NZD/USD", inflationDiff: -0.2, actualFxChange: -2.1, pppPredicted: -0.2 },
+              ];
+              return (
+                <div style={sectionStyle}>
+                  <h2 style={{ fontSize: 15, fontWeight: 600, color: "var(--text-primary)", marginBottom: 8 }}>
+                    PPP Scatter — Inflation Differential vs. Actual FX Change
+                  </h2>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 16, lineHeight: 1.5 }}>
+                    Dots close to the dashed PPP line suggest exchange rates align with inflation differentials. Dots far from the line indicate over/undervaluation.
+                  </p>
+                  <PPPScatterPlot data={scatterData} height={320} />
+                </div>
+              );
+            })()}
           </>
         )}
       </div>

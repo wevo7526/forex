@@ -65,6 +65,7 @@ export interface OHLCV {
   high: number;
   low: number;
   close: number;
+  volume?: number;
 }
 
 // ─── Technical Analysis ────────────────────────────────────

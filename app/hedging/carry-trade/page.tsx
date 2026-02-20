@@ -8,6 +8,7 @@ import { LoadingState, ErrorState } from "@/components/ui/Spinner";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PayoffChart } from "@/components/charts/PayoffChart";
+import { CarryTradeHeatMap } from "@/components/charts/CarryTradeHeatMap";
 import { calculateCarryTrade } from "@/lib/api";
 import { useRates } from "@/store/ratesStore";
 import type { CarryTradeInput, CarryTradeResult } from "@/types/forex";
@@ -248,6 +249,32 @@ export default function CarryTradePage() {
                     referenceLines={[{ value: 0, label: "Break-even", axis: "y" }]}
                     xLabel="Ending Spot Rate"
                     yLabel="Profit"
+                  />
+                </div>
+              )}
+
+              {/* 2D Sensitivity Heat Map */}
+              {result.pnlTable && result.pnlTable.length > 0 && (
+                <div
+                  style={{
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 10,
+                    padding: 24,
+                    marginTop: 24,
+                  }}
+                >
+                  <h3 style={{ fontSize: 14, fontWeight: 600, color: "var(--text-primary)", margin: "0 0 8px 0" }}>
+                    Sensitivity Heat Map
+                  </h3>
+                  <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "0 0 16px 0" }}>
+                    P&amp;L across spot rate changes (columns) and interest differential shifts (rows)
+                  </p>
+                  <CarryTradeHeatMap
+                    pnlTable={result.pnlTable}
+                    borrowRate={borrowRate}
+                    investRate={investRate}
+                    initialSpot={spotRate}
                   />
                 </div>
               )}

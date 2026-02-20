@@ -44,8 +44,8 @@ export function VolatilityChart({ data, height = 200 }: VolatilityChartProps) {
             borderRadius: 6,
             fontSize: 12,
           }}
-          formatter={(value: number) => [`${(value * 100).toFixed(2)}%`, "Volatility"]}
-          labelFormatter={(label: string) => new Date(label).toLocaleDateString()}
+          formatter={(value?: number) => [value != null ? `${(value * 100).toFixed(2)}%` : "", "Volatility"]}
+          labelFormatter={(label) => new Date(String(label)).toLocaleDateString()}
         />
         <Area
           type="monotone"
