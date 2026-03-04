@@ -4,7 +4,9 @@ import { useEffect, useRef } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import type { LiveRate } from "@/types/forex";
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000";
+// Derive WebSocket URL from the API base URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const WS_URL = API_URL.replace(/^https:\/\//, "wss://").replace(/^http:\/\//, "ws://");
 
 interface UseRatesOptions {
   onUpdate: (rate: LiveRate) => void;
@@ -39,7 +41,7 @@ export function useRateStream({ onUpdate, onBatchUpdate, onStatusChange }: UseRa
   onStatusRef.current = onStatusChange;
 
   const { readyState, lastJsonMessage } = useWebSocket(
-    `${WS_URL}/api/rates/ws/all`,
+    `${WS_URL}/ws/all`,
     {
       shouldReconnect: () => true,
       reconnectAttempts: 10,
